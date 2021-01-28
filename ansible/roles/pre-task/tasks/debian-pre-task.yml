@@ -1,0 +1,7 @@
+---
+# Update apt cache for Linux
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 43200 # doesn't work without it
+...

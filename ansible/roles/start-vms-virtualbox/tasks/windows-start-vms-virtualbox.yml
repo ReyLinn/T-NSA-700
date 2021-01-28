@@ -1,0 +1,26 @@
+---
+# Create alias for a command to check that VM is already running
+- name: "Check if {{ item.0 }} is already running"
+  shell:
+    cmd: 'C:\Program Files\Oracle\VirtualBox\VBoxManage.exe showvminfo {{ item.0 }} | findstr "running (since"'
+  register: virtualbox_check_vm_running
+  failed_when: virtualbox_check_vm_running.rc > 1
+  changed_when: virtualbox_check_vm_running.rc == 1
+
+# Create alias for a command to check that VM is already exists
+- name: "Check if {{ item.0 }} is already exists"
+  command: 'C:\Program Files\Oracle\VirtualBox\VBoxManage.exe showvminfo {{ item.0 }}'
+  register: virtualbox_check_vm
+  failed_when: virtualbox_check_vm.rc > 1
+  changed_when: virtualbox_check_vm.rc == 1
+
+# Import VM into VirtualBox
+- name: "Import {{ item.0 }} created into Virtualbox"
+  command: 'C:\Program Files\Oracle\VirtualBox\VBoxManage.exe import {{ item.1 }}\{{ item.0 }}.ovf'
+  when: virtualbox_check_vm.rc == 1
+
+# Start VM
+- name: "Start {{ item.0 }} VM"
+  command: 'C:\Program Files\Oracle\VirtualBox\VBoxManage.exe startvm {{ item.0 }} --type=headless'
+  when: virtualbox_check_vm_running.rc == 1
+...

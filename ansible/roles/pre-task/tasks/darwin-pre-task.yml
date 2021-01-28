@@ -1,0 +1,6 @@
+---
+# Add Ansible plugin for homebrew
+- name: Install Ansible Plugin for Windows
+  become: false
+  command: ansible-galaxy collection install community.general
+...

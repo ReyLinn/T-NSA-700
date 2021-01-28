@@ -1,0 +1,16 @@
+---
+# Create and configure virtualbox vms for MacOS
+- name: Create and configure virtualbox vms in MacOS
+  import_tasks: darwin-create-vms-virtualbox.yml
+  when: ansible_facts['os_family'] == 'Darwin'
+
+# Create and configure virtualbox vms for Windows
+- name: Create and configure virtualbox vms in Windows
+  import_tasks: windows-create-vms-virtualbox.yml
+  when: ansible_facts['os_family'] == 'Windows'
+
+# Create and configure virtualbox vms for Linux/Debian
+- name: Create and configure virtualbox vms in Linux
+  import_tasks: debian-create-vms-virtualbox.yml
+  when: ansible_facts['os_family'] == 'Debian'
+...

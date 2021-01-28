@@ -1,0 +1,8 @@
+---
+# Install VirtualBox for Mac OS
+- name: Install VirtualBox with Homebrew Cask
+  become: false
+  homebrew_cask:
+    name: 'virtualbox'
+    state: present
+...

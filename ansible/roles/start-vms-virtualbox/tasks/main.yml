@@ -1,0 +1,25 @@
+---
+# Import and Start virtualbox vms for MacOS
+- name: Import and start virtualbox vms in MacOS
+  include_tasks: darwin-start-vms-virtualbox.yml
+  with_together:
+    - [ "'{{ vm_nginx_name }}'", "'{{ vm_db_name }}'", "'{{ vm_back_name }}'", "'{{ vm_front_name }}'" ]
+    - [ "'{{ output_directory_ovf_nginx }}'", "'{{ output_directory_ovf_db }}'", "'{{ output_directory_ovf_back }}'", "'{{ output_directory_ovf_front }}'" ]
+  when: ansible_facts['os_family'] == 'Darwin'
+
+# Import and Start virtualbox vms for Windows
+- name: Import and start virtualbox vms in Windows
+  include_tasks: windows-start-vms-virtualbox.yml
+  with_together:
+    - [ "'{{ vm_nginx_name }}'", "'{{ vm_db_name }}'", "'{{ vm_back_name }}'", "'{{ vm_front_name }}'" ]
+    - [ "'{{ output_directory_ovf_nginx }}'", "'{{ output_directory_ovf_db }}'", "'{{ output_directory_ovf_back }}'", "'{{ output_directory_ovf_front }}'" ]
+  when: ansible_facts['os_family'] == 'Windows'
+
+# Import and Start virtualbox vms for Linux/Debian
+- name: Import and start virtualbox vms in Linux
+  include_tasks: debian-start-vms-virtualbox.yml
+  with_together:
+    - [ "'{{ vm_nginx_name }}'", "'{{ vm_db_name }}'", "'{{ vm_back_name }}'", "'{{ vm_front_name }}'" ]
+    - [ "'{{ output_directory_ovf_nginx }}'", "'{{ output_directory_ovf_db }}'", "'{{ output_directory_ovf_back }}'", "'{{ output_directory_ovf_front }}'" ]
+  when: ansible_facts['os_family'] == 'Debian'
+...

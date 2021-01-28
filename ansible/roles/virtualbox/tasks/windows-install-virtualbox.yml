@@ -1,0 +1,17 @@
+---
+# Create alias for a command to check that Virtualbox is already installed
+- name: Check to see if Virtualbox is installed
+  win_stat:
+    path: 'C:\Program Files (x86)\Oracle\VirtualBox\6.1.16\VirtualBox-6.1.16-140961-Win.exe'
+  register: virtualbox_check_installed
+
+- name: Download Virtualbox package
+  win_get_url:
+    url: 'https://download.virtualbox.org/virtualbox/6.1.16/VirtualBox-6.1.16-140961-Win.exe'
+    dest: 'c:\temp\VirtualBox-6.1.16-140961-Win.exe'
+  when: not virtualbox_check_installed.stat.exists
+
+- name: Install Virtualbox package
+  raw: 'c:\temp\VirtualBox-6.1.16-140961-Win.exe /Quiet /NoRestart /Full'
+  when: not virtualbox_check_installed.stat.exists
+...

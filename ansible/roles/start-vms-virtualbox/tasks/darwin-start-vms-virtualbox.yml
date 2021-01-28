@@ -1,0 +1,30 @@
+---
+# Create alias for a command to check that VM is already running
+- name: "Check if {{ item.0 }} is already running"
+  become: false
+  shell:
+    cmd: "VBoxManage showvminfo {{ item.0 }} | grep -c 'running (since'"
+  register: virtualbox_check_vm_running
+  failed_when: virtualbox_check_vm_running.rc > 1
+  changed_when: virtualbox_check_vm_running.rc == 1
+
+# Create alias for a command to check that VM is already exists
+- name: "Check if {{ item.0  }} is already exists"
+  become: false
+  command: "VBoxManage showvminfo {{ item.0  }}"
+  register: virtualbox_check_vm
+  failed_when: virtualbox_check_vm.rc > 1
+  changed_when: virtualbox_check_vm.rc == 1
+
+# Import VM into VirtualBox
+- name: "Import {{ item.0 }} created into Virtualbox"
+  become: false
+  command: "VBoxManage import {{ item.1 }}/{{ item.0 }}.ovf"
+  when: virtualbox_check_vm.rc == 1
+
+# Start VM
+- name: "Start {{ item.0 }} VM"
+  become: false
+  command: "VBoxManage startvm {{ item.0 }} --type=headless"
+  when: virtualbox_check_vm_running.rc == 1
+...

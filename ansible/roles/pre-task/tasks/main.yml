@@ -1,0 +1,16 @@
+---
+# Install plugin for MacOS
+- name: Install plugin necessary for ansible tasks in MacOS
+  import_tasks: darwin-pre-task.yml
+  when: ansible_facts['os_family'] == 'Darwin'
+
+# Install plugin for Windows
+- name: Install plugin necessary for ansible tasks in Windows
+  import_tasks: windows-pre-task.yml
+  when: ansible_facts['os_family'] == 'Windows'
+
+# Update packages for Linux/Debian
+- name: Update packages in Linux
+  import_tasks: debian-pre-task.yml
+  when: ansible_facts['os_family'] == 'Debian'
+...

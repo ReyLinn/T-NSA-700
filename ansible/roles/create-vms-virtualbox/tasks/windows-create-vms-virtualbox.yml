@@ -1,0 +1,38 @@
+---
+# Create alias for a command to check that VM NGINX is already exists
+- name: "Check if {{ vm_nginx_name }} is already exists"
+  command: 'C:\Program Files\Oracle\VirtualBox\VBoxManage.exe showvminfo {{ vm_nginx_name }}'
+  register: virtualbox_check_vm_nginx
+  failed_when: virtualbox_check_vm_nginx.rc > 1
+  changed_when: virtualbox_check_vm_nginx.rc == 1
+
+# Create alias for a command to check that VM DB is already exists
+- name: "Check if {{ vm_db_name }} is already exists"
+  command: 'C:\Program Files\Oracle\VirtualBox\VBoxManage.exe showvminfo {{ vm_db_name }}'
+  register: virtualbox_check_vm_db
+  failed_when: virtualbox_check_vm_db.rc > 1
+  changed_when: virtualbox_check_vm_db.rc == 1
+
+# Create alias for a command to check that VM BACK is already exists
+- name: "Check if {{ vm_back_name }} is already exists"
+  command: 'C:\Program Files\Oracle\VirtualBox\VBoxManage.exe showvminfo {{ vm_back_name }}'
+  register: virtualbox_check_vm_back
+  failed_when: virtualbox_check_vm_back.rc > 1
+  changed_when: virtualbox_check_vm_back.rc == 1
+
+# Create alias for a command to check that VM FRONT is already exists
+- name: "Check if {{ vm_front_name }} is already exists"
+  command: 'C:\Program Files\Oracle\VirtualBox\VBoxManage.exe showvminfo {{ vm_front_name }}'
+  register: virtualbox_check_vm_front
+  failed_when: virtualbox_check_vm_front.rc > 1
+  changed_when: virtualbox_check_vm_front.rc == 1
+
+# Create and Configure Debian VM into Virtualbox with Packer
+- name: Create Debian VM into Virtualbox with Packer
+  command: "packer build {{ path_packer_file }}"
+  when:
+    - virtualbox_check_vm_nginx.rc == 1
+    - virtualbox_check_vm_db.rc == 1
+    - virtualbox_check_vm_back.rc == 1
+    - virtualbox_check_vm_front.rc == 1
+...

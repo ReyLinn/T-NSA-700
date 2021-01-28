@@ -1,0 +1,41 @@
+---
+# Create alias for a command to check that package is already installed
+- name: Check if debian-virtualbox package is installed
+  command: dpkg-query -W debian-virtualbox
+  register: virtualbox_check_deb
+  failed_when: virtualbox_check_deb.rc > 1
+  changed_when: virtualbox_check_deb.rc == 1
+
+# Add first key for debian-virtualbox
+- name: Add Key 1 Virtualbox
+  apt_key:
+    url: "{{ virtualbox_key_1 }}"
+    state: present
+
+# Add second key for debian-virtualbox
+- name: Add Key 2 Virtualbox
+  apt_key:
+    url: "{{ virtualbox_key_2 }}"
+    state: present
+
+# Add a repository for debian-virtualbox
+- name: Add Repository Virtualbox
+  apt_repository:
+    repo: "{{ virtualbox_repo_debian }}"
+    state: present
+    filename: debian-virtualbox
+    update_cache: no
+
+# Download debian-virtualbox
+- name: Download Virtualbox package
+  get_url:
+    url: "{{ virtualbox_ubuntu_deb_package }}"
+    dest: "/tmp/{{ virtualbox_package_name }}.deb"
+  when: virtualbox_check_deb.rc == 1
+
+# Install debian-virtualbox
+- name: Install Virtualbox package
+  apt:
+    deb: "/tmp/{{ virtualbox_package_name }}.deb"
+  when: virtualbox_check_deb.rc == 1
+...

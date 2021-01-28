@@ -1,0 +1,16 @@
+---
+# Install virtualbox for MacOS
+- name: Install virtualbox in MacOS
+  import_tasks: darwin-install-virtualbox.yml
+  when: ansible_facts['os_family'] == 'Darwin'
+
+# Install virtualbox for Windows
+- name: Install virtualbox in Windows
+  import_tasks: windows-install-virtualbox.yml
+  when: ansible_facts['os_family'] == 'Windows'
+
+# Install virtualbox for Linux/Debian
+- name: Install virtualbox in Linux
+  import_tasks: debian-install-virtualbox.yml
+  when: ansible_facts['os_family'] == 'Debian'
+...

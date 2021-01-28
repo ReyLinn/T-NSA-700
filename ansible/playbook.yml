@@ -1,0 +1,14 @@
+---
+- name: Install and Configure VirtualBox
+  become: yes
+  hosts: localhost
+  remote_user: "{{ local_user }}"
+  vars:
+    local_user: "{{ lookup('env', 'LOCAL_USERNAME') }}"
+
+  roles:
+    - pre-task
+    - virtualbox
+    - create-vms-virtualbox
+    - start-vms-virtualbox
+...

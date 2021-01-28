@@ -1,0 +1,26 @@
+# Variables
+
+# Variables for Virtualbox
+virtualbox_app_name: virtualbox
+virtualbox_key_1: https://www.virtualbox.org/download/oracle_vbox_2016.asc
+virtualbox_key_2: https://www.virtualbox.org/download/oracle_vbox.asc
+virtualbox_repo_debian: "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian {{ ansible_lsb['codename'] }} contrib"
+vitualbox_repo_debian_filename: "{{ virtualbox_app_name }}"
+virtualbox_ubuntu_deb_package: "https://download.virtualbox.org/virtualbox/6.1.16/virtualbox-6.1_6.1.16-140961~{{ ansible_distribution }}~{{ linux_distrib }}_amd64.deb"
+virtualbox_package_name: "{{ virtualbox_app_name }}_6-1-16"
+
+# Variables for OS
+linux_distrib: "{{ ansible_lsb['codename'] if(ansible_lsb['codename'] != 'focal') else 'eoan' }}"
+path_packer_file: "{{ 'packer\virtualbox-debian.json' if(ansible_facts['os_family'] == 'Windows') else 'packer/virtualbox-debian.json' }}"
+
+# Variables for VM
+vm_nginx_name: debian-10.7.0-nginx-amd64 # To change in virtualbox-debian.json if we change this
+vm_db_name: debian-10.7.0-db-amd64 # To change in virtualbox-debian.json if we change this
+vm_back_name: debian-10.7.0-back-amd64 # To change in virtualbox-debian.json if we change this
+vm_front_name: debian-10.7.0-front-amd64 # To change in virtualbox-debian.json if we change this
+
+# Variables for output directory to OVF file
+output_directory_ovf_nginx: output-virtualbox-nginx
+output_directory_ovf_db: output-virtualbox-db
+output_directory_ovf_back: output-virtualbox-back
+output_directory_ovf_front: output-virtualbox-front
